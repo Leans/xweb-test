@@ -22,7 +22,7 @@ public class Comparador {
         //se definen variables para usar en el algoritmo de comparacion de pixeles
         boolean resultado = true;
         Resultado resultadoFinal;
-        //cont cuenta la cantidad de pixeles comparados por el algoritmo
+        //cont cuenta la cantidad de pixeles comparados por el algoritmo que resultaron iguales
         int cont = 0;
         //pxDiff cuenta la cantidad de pixeles diferentes encontrados en la comparacion de pixeles
         int pxDiff = 0;
@@ -31,14 +31,16 @@ public class Comparador {
         //si el ancho y alto de las imagenes a comparar son iguales, se procede a realizar la comparacion
         if (imagen1.getWidth() == imagen2.getWidth() && imagen1.getHeight() == imagen2.getHeight()) {
             
-        	//se crea un objeto mapaDeCalor de tipo BufferedImage, con el tamanio de las imagenes a comparar
+        	//se crea un objeto mapaDeCalor de tipo BufferedImage, con el tamaño de las imagenes a comparar
         	mapaDeCalor = new BufferedImage(imagen1.getWidth(), imagen1.getHeight(), BufferedImage.TYPE_INT_RGB);
         	
         	//bucle que comparara los pixeles de las imagenes 1 y 2, de a pares
         	//recorre la imagen1 en ancho
-            for (int x = 0; x < imagen1.getWidth(); x++) {
+        	int imagen1Ancho = imagen1.getWidth();
+            for (int x = 0; x < imagen1Ancho; x++) {
             	//recorre la imagen1 en alto
-                for (int y = 0; y < imagen1.getHeight(); y++) {
+            	int imagen1Alto = imagen1.getHeight();
+                for (int y = 0; y < imagen1Alto; y++) {
                 	
                 	//si el pixel actual en la imagen1 es distinto del pixel en la misma coordenada en la imagen2
                     if (imagen1.getRGB(x, y) != imagen2.getRGB(x, y)) {
@@ -52,7 +54,7 @@ public class Comparador {
                         //incrementa el contador de pixeles diferentes entre ambas imagenes
                         pxDiff++;
                     }
-                    //incrementa el contador de pixeles comparados
+                    //incrementa el contador de pixeles iguales entre ambas imagenes
                     cont++;
                 }
             }
@@ -84,5 +86,82 @@ public class Comparador {
         
         return imagen;
     }
+    
+	/**
+	 * Metodo para ejecutar el algoritmo de comparacion de imagenes. Compara dos imagenes.
+	 * Se recibe como parametros de entrada las dos imagenes, de tipo Imagen.
+	 * Devuelve un resultado de tipo Resultado.
+	 */
+    public Resultado comparacionPixAMatrizPix(Imagen img1, Imagen img2) {
+    	
+    	//se almacenan las dos imagenes recibidas como parametro de entrada en variables de tipo BufferedImage
+        BufferedImage imagen1 = img1.getBufferedImage();
+        BufferedImage imagen2 = img2.getBufferedImage();
+        
+        //se definen variables para usar en el algoritmo de comparacion de pixeles
+        boolean resultado = true;
+        Resultado resultadoFinal;
+        //cont cuenta la cantidad de pixeles comparados por el algoritmo que resultaron iguales
+        int cont = 0;
+        //pxDiff cuenta la cantidad de pixeles diferentes encontrados en la comparacion de pixeles
+        int pxDiff = 0;
+        BufferedImage mapaDeCalor = null;
+        
+        //si el ancho y alto de las imagenes a comparar son iguales, se procede a realizar la comparacion
+        if (imagen1.getWidth() == imagen2.getWidth() && imagen1.getHeight() == imagen2.getHeight()) {
+            
+        	//se crea un objeto mapaDeCalor de tipo BufferedImage, con el tamaño de las imagenes a comparar
+        	mapaDeCalor = new BufferedImage(imagen1.getWidth(), imagen1.getHeight(), BufferedImage.TYPE_INT_RGB);
+        	
+        	//variables para el manejo del recorrido de la submatriz de imagen2
+        	int i;
+        	int j;
+        	int delta = 2;
+        	boolean exito = true;
+        	
+        	//bucle que comparara los pixeles de las imagenes 1 y 2, de a pares
+        	//recorre la imagen1 en ancho
+        	int imagen1Ancho = imagen1.getWidth();
+            for (int x = 0; x < imagen1Ancho; x++) {
+            	//recorre la imagen1 en alto
+            	int imagen1Alto = imagen1.getHeight();
+                for (int y = 0; y < imagen1Alto; y++) {
+                	
+                	//se recorre la submatriz de pixeles, desde el punto inicial (i;j)
+                	for (i=x-delta; i<(delta*2+1); i++) {
+                		for (j=y-delta; j<(delta*2+1); j++) {
+                			//verifica que el punto (i;j) se encuentre dentro del indice de la matriz de la imagen
+                			if ((i>0 && i<imagen1Ancho)  && (j>0 && j<imagen1Alto)) {
+                				//se hace la comparacion de pixel a pixel
+                				//si el pixel actual en imagen1 es distinto del pixel en la submatriz de imagen2
+                				if (imagen1.getRGB(x, y) != imagen2.getRGB(i, j)) {
+                					//la comparacion ha fallado, existe al menos un pixel diferente entre las imagenes
+                					resultado = false;
+                					//crea el mapa de calor, pinta el pixel con la coordenada (x;y)
+                					mapaDeCalor = this.crearMapaDeCalor(mapaDeCalor, x, y);
+                					//incrementa el contador de pixeles diferentes entre ambas imagenes
+                					pxDiff++;
+                				}
+                				//incrementa el contador de pixeles iguales
+                				cont++;                				
+                			}
+                		}
+                	}
+                	
+                } //for imagen1Alto
+            } //for imagen1Ancho
+        //si no son iguales el ancho y alto de las imagenes a comparar, no puede llevarse a cabo el procesamiento
+        } else {
+            resultado = false;
+        }
+        
+        //se crea un objeto resultadoFinal de tipo Resultado, 
+        //con la informacion obtenida por el algoritmo de comparacion
+        resultadoFinal = new Resultado(resultado, pxDiff, cont, img1.getNombreNavegador(), 
+        		img2.getNombreNavegador(), mapaDeCalor);
+        
+        return resultadoFinal;
+    }
+    
     
 }

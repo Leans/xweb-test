@@ -249,6 +249,25 @@ public class Manipulador {
     }
     
     /**
+     * Metodo que compara dos imagenes con el algoritmo de comparacion.
+     * Recibe como parametros de entrada: las imagenes de tipo Imagen, imagen1 y imagen2.
+     * Devuelve un resultado de tipo Resultado.
+     */
+    public Resultado compararImagenesPixAMatrizPix(Imagen imagen1, Imagen imagen2) {
+    	
+    	//crea un nuevo comparador de tipo Comparador para ejecutar el algoritmo de comparacion de imagenes
+        Comparador comparador = new Comparador();
+        
+        //ejecuta el algoritmo de comparacion sobre las dos imagenes recibidas como parametro de entrada
+        Resultado resultado = comparador.comparacionPixAMatrizPix(imagen1, imagen2);
+        
+        //llama al metodo para guardar el resultado de la comparacion en la ruta de destino definida por la variable path
+        resultado.guardarResultado(this.path + "resultado.png");
+        
+        return resultado;
+    }
+    
+    /**
      * Metodo para crear reportes.
      * Recibe como parametro de entrada un resultado de tipo Resultado. 
      * El resultado es lo obtenido luego de aplicar el algoritmo de comparacion de imagenes.

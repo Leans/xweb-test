@@ -105,6 +105,7 @@ public class Comparador {
         int cont = 0;
         //pxDiff cuenta la cantidad de pixeles diferentes encontrados en la comparacion de pixeles
         int pxDiff = 0;
+        int pxIgual = 0;
         BufferedImage mapaDeCalor = null;
         
         //si el ancho y alto de las imagenes a comparar son iguales, se procede a realizar la comparacion
@@ -116,8 +117,8 @@ public class Comparador {
         	//variables para el manejo del recorrido de la submatriz de imagen2
         	int i;
         	int j;
-        	int delta = 2;
-        	boolean exito = true;
+        	int delta = 0;
+        	boolean exito;
         	
         	//bucle que comparara los pixeles de las imagenes 1 y 2, de a pares
         	//recorre la imagen1 en ancho
@@ -126,28 +127,45 @@ public class Comparador {
             	//recorre la imagen1 en alto
             	int imagen1Alto = imagen1.getHeight();
                 for (int y = 0; y < imagen1Alto; y++) {
-                	
-                	//se recorre la submatriz de pixeles, desde el punto inicial (i;j)
-                	for (i=x-delta; i<(delta*2+1); i++) {
-                		for (j=y-delta; j<(delta*2+1); j++) {
+                	System.out.println("cont: " + cont + " | " + "PixDiff: " + pxDiff + " | " + "PxIgual: " + pxIgual);
+                	i = x-4;
+                	j = y-4;
+                	exito = false;
+                	//recorre la submatriz de imagen2, del punto inicial (i;j), mientras no se encuentre un punto igual
+                	while (i<x+4) {
+                		System.out.println("!");
+                		while (j<y+4) {
+                			System.out.println("!?");
                 			//verifica que el punto (i;j) se encuentre dentro del indice de la matriz de la imagen
-                			if ((i>0 && i<imagen1Ancho)  && (j>0 && j<imagen1Alto)) {
+                			if ((i>=0 && i<imagen1Ancho)  && (j>=0 && j<imagen1Alto)) {
+                				System.out.println("aaah");
                 				//se hace la comparacion de pixel a pixel
                 				//si el pixel actual en imagen1 es distinto del pixel en la submatriz de imagen2
-                				if (imagen1.getRGB(x, y) != imagen2.getRGB(i, j)) {
-                					//la comparacion ha fallado, existe al menos un pixel diferente entre las imagenes
-                					resultado = false;
-                					//crea el mapa de calor, pinta el pixel con la coordenada (x;y)
-                					mapaDeCalor = this.crearMapaDeCalor(mapaDeCalor, x, y);
-                					//incrementa el contador de pixeles diferentes entre ambas imagenes
-                					pxDiff++;
+                				if (imagen1.getRGB(x, y) == imagen2.getRGB(i, j)) {
+                					//se ha encontrado un pixel igual al pixel (x;y) en la submatriz
+                					exito = true;
+                					pxIgual++;
+                					System.out.println("safe");
                 				}
-                				//incrementa el contador de pixeles iguales
-                				cont++;                				
                 			}
+                			
+                			j++;
                 		}
+                		
+                		i++;
                 	}
                 	
+                	//NO se encontro ningun pixel igual al pixel de imagen1 en (x;y) en la submatriz
+                	if (!exito) {
+                		//la comparacion ha fallado, existe al menos un pixel diferente entre las imagenes
+    					resultado = false;
+    					//crea el mapa de calor, pinta el pixel con la coordenada (x;y)
+    					mapaDeCalor = this.crearMapaDeCalor(mapaDeCalor, x, y);
+    					//incrementa el contador de pixeles diferentes entre ambas imagenes
+    					pxDiff++;
+                	}
+                	//incrementa el contador de pixeles comparados
+                	cont++;
                 } //for imagen1Alto
             } //for imagen1Ancho
         //si no son iguales el ancho y alto de las imagenes a comparar, no puede llevarse a cabo el procesamiento

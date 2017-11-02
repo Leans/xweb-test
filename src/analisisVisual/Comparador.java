@@ -133,19 +133,18 @@ public class Comparador {
                 	exito = false;
                 	//recorre la submatriz de imagen2, del punto inicial (i;j), mientras no se encuentre un punto igual
                 	while (i<x+4) {
-                		System.out.println("!");
+
                 		while (j<y+4) {
-                			System.out.println("!?");
+
                 			//verifica que el punto (i;j) se encuentre dentro del indice de la matriz de la imagen
                 			if ((i>=0 && i<imagen1Ancho)  && (j>=0 && j<imagen1Alto)) {
-                				System.out.println("aaah");
+
                 				//se hace la comparacion de pixel a pixel
                 				//si el pixel actual en imagen1 es distinto del pixel en la submatriz de imagen2
                 				if (imagen1.getRGB(x, y) == imagen2.getRGB(i, j)) {
                 					//se ha encontrado un pixel igual al pixel (x;y) en la submatriz
                 					exito = true;
                 					pxIgual++;
-                					System.out.println("safe");
                 				}
                 			}
                 			

@@ -117,7 +117,7 @@ public class Comparador {
         	//variables para el manejo del recorrido de la submatriz de imagen2
         	int i;
         	int j;
-        	int delta = 0;
+        	int delta = 0; //margen de tolerancia, afecta el tamaño de la submatriz
         	boolean exito;
         	
         	//bucle que comparara los pixeles de las imagenes 1 y 2, de a pares
@@ -127,7 +127,7 @@ public class Comparador {
             	//recorre la imagen1 en alto
             	int imagen1Alto = imagen1.getHeight();
                 for (int y = 0; y < imagen1Alto; y++) {
-                	System.out.println("cont: " + cont + " | " + "PixDiff: " + pxDiff + " | " + "PxIgual: " + pxIgual);
+                	//System.out.println("cont: " + cont + " | " + "PixDiff: " + pxDiff + " | " + "PxIgual: " + pxIgual);
                 	i = x-4;
                 	j = y-4;
                 	exito = false;

@@ -105,7 +105,6 @@ public class Comparador {
         int cont = 0;
         //pxDiff cuenta la cantidad de pixeles diferentes encontrados en la comparacion de pixeles
         int pxDiff = 0;
-        int pxIgual = 0;
         BufferedImage mapaDeCalor = null;
         
         //si el ancho y alto de las imagenes a comparar son iguales, se procede a realizar la comparacion
@@ -140,6 +139,7 @@ public class Comparador {
                 		while (j<=jmax) {
                 			//verifica que el punto (i;j) se encuentre dentro del indice de la matriz de la imagen
                 			if ((i>=0 && i<imagen1Ancho)  && (j>=0 && j<imagen1Alto)) {
+                				
                 				//se hace la comparacion de pixel a pixel
                 				//si el pixel actual en imagen1 es distinto del pixel en la submatriz de imagen2
                 				if (imagen1.getRGB(x, y) == imagen2.getRGB(i, j)) {
@@ -183,5 +183,42 @@ public class Comparador {
         return resultadoFinal;
     }
     
+    /**
+	 * Metodo de clase para comparar dos pixeles.
+	 * Recibe dos int que corresponden a cada pixel como parametros de entrada (obtenidos mediante el metodo getRGB)
+	 * y un int que sera un valor tolerancia en la comparacion.
+	 * Devuelve un boolean segun si los pixeles resultan iguales dentro del valor de tolerancia.
+	 */
+    public static boolean compararParPixeles(int pixel1, int pixel2, int tolerancia) {
+    	
+    	boolean comparacion = false;
+    	
+    	//obtiene los valores RGB del pixel1
+    	int blue1 = pixel1 & 0xff;
+    	int green1 = (pixel1 & 0xff00) >> 8;
+    	int red1 = (pixel1 & 0xff0000) >> 16;
+    	
+    	//obtiene los valores RGB minimos y maximos del pixel2 segun la tolerancia
+    	int blue2max = pixel2 & 0xff + tolerancia;
+    	int blue2min = pixel2 & 0xff - tolerancia;
+    	int green2max = (pixel2 & 0xff00) >> 8 + tolerancia;
+    	int green2min = (pixel2 & 0xff00) >> 8 - tolerancia;
+    	int red2max = (pixel2 & 0xff0000) >> 16 + tolerancia;
+    	int red2min = (pixel2 & 0xff0000) >> 16 - tolerancia;
+    	
+    	//si el valor del canal azul del pixel1 se encuentra dentro del valor tolerado de pixel2 
+    	if (blue1 <= blue2max && blue1 >= blue2min) {
+    		//si el valor del canal verde del pixel1 se encuentra dentro del valor tolerado de pixel2 
+    		if (green1 <= green2max && green1 >= green2min) {
+    			//si el valor del canal rojo del pixel1 se encuentra dentro del valor tolerado de pixel2 
+    			if (red1 <= red2max && red1 >= red2min) {
+    				//se considera los pixeles iguales
+    				comparacion = true;
+    			}
+    		}
+    	}
+    	
+    	return comparacion;
+    }
     
 }

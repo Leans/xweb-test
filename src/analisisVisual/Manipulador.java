@@ -269,24 +269,22 @@ public class Manipulador {
     
     /**
      * Metodo para crear reportes.
-     * Recibe como parametro de entrada un resultado de tipo Resultado. 
+     * Recibe como parametro de entrada objeto de tipo Resultado. 
      * El resultado es lo obtenido luego de aplicar el algoritmo de comparacion de imagenes.
-     * Devuelve un boolean, que se devolvera llamando el metodo crearReporte de Utils (metodo que devuelve un boolean
-     * segun si se puede generar el reporte correctamente o no)
+     * Devuelve un boolean, segun si se puede generar el reporte correctamente o no.
      */
     public boolean crearReporte(Resultado resultado) {
         
-    	//se almacenan dos strings con los dos navegadores, sacado del parametro de entrada resultado
+    	//se obtienen dos strings con los nombres de los navegadores
         String navegador1 = resultado.getNavegador1();
         String navegador2 = resultado.getNavegador2();
         
-        //se almacenan dos integer, con la cantidad de pixeles total y diferentes,
-        //sacado del parametro de entrada resultado
+        //se obtienen la cantidad de pixeles total y diferentes
         int cantPixIguales = resultado.getCantPixTotal() - resultado.getCantPixDiferentes();
         int cantPixDiferentes= resultado.getCantPixDiferentes();
         
-        //el metodo crearReporte devuelve un boolean, 
-        //true si se pudo generar el reporte, caso contrario devuelve false
+        //se crea el reporte mediante el metodo estatico de la clase Utils
+        //devuelve true si se pudo generar el reporte, caso contrario devuelve false
         return Utils.crearReporte(this.path + "reporte.html", navegador1, navegador2,
                 this.nombrePrueba, this.fecha, cantPixIguales, cantPixDiferentes);
     }

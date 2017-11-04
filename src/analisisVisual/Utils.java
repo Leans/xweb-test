@@ -69,12 +69,12 @@ public class Utils {
     
     /**
      * Metodo de clase para crear un reporte.
-     * Recibe como parametro: un string, path; donde se almacenara el reporte
-     * dos strings, browser1 y browser2; en texto, los dos navegadores cuyas capturas se compararan
+     * Recibe como parametro: un string, path, donde se almacenara el reporte;
+     * dos strings, browser1 y browser2, en texto, los dos navegadores comparados;
      * un string, nombre;
-     * un string, fecha; con la hora y fecha de ejecucion
-     * un integer, pxIgual; cantidad de pixeles iguales?
-     * un integer, pixDiff; cantidad de pixeles diferentes?
+     * un string, fecha, con la hora y fecha de ejecucion;
+     * un integer, pxIgual, cantidad de pixeles iguales?
+     * un integer, pixDiff, cantidad de pixeles diferentes.
      * Devuelve un boolean, sera true si se genera el reporte correctamente, sino devuelve false.
      */
     //@SuppressWarnings("deprecation")
@@ -85,9 +85,9 @@ public class Utils {
         	//define un string con la fecha y hora
             String fechaYhora = "Fecha: " + fecha.replaceAll(" ", " - Hora: ");
             
-            //almacena el contenido de un reporte en un archivo File
+            //almacena el contenido de una plantilla reporte en un archivo File
             File templateReportes =  new File("C://che//utils//templateJarReportes.html");
-            //almacena el contenido del archivo File del reporte en un string
+            //almacena el contenido del archivo File en un string
             String htmlString = FileUtils.readFileToString(templateReportes, Charset.forName("utf-8"));
             
             //reemplaza expresiones del string anterior, por valores de los parametros ingresados al metodo
@@ -102,6 +102,7 @@ public class Utils {
             
             //crea un nuevo archivo File en la ruta path especificada como parametro de entrada
             File newHtmlFile = new File(path);
+            //escribe el string generado al File creado
             FileUtils.writeStringToFile(newHtmlFile, htmlReemplazado, Charset.forName("utf-8"));
             return true;
         } catch(IOException e) {

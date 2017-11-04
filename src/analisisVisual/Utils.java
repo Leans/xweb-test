@@ -70,12 +70,13 @@ public class Utils {
     
     /**
      * Metodo de clase para crear un reporte.
-     * Recibe como parametro: un string, path, donde se almacenara el reporte;
-     * dos strings, browser1 y browser2, en texto, los dos navegadores comparados;
-     * un string, nombre;
-     * un string, fecha, con la hora y fecha de ejecucion;
-     * un integer, pxIgual, cantidad de pixeles iguales?
-     * un integer, pixDiff, cantidad de pixeles diferentes.
+     * Recibe como parametro: un string, donde se almacenara el reporte;
+     * dos strings, nombre de los dos navegadores comparados;
+     * un string, nombre de la prueba;
+     * un string, con la hora y fecha de ejecucion;
+     * un integer, cantidad de pixeles iguales?
+     * un integer, cantidad de pixeles diferentes,
+     * un double, porcentajePxDiff, porcentaje de pixeles diferentes
      * Devuelve un boolean, sera true si se genera el reporte correctamente, sino devuelve false.
      */
     //@SuppressWarnings("deprecation")

@@ -25,7 +25,7 @@ public class Prueba2ChromeFF {
 
 	public static void main(String[] args) {
 		
-		Manipulador manipulador = new Manipulador("Prueba 2 Github - Chrome-Firefox");
+		Manipulador manipulador = new Manipulador("Prueba 2 Google - Chrome-Firefox");
 
 		System.setProperty("webdriver.chrome.driver", "C:\\browser-drivers\\chromedriver\\chromedriver.exe");
 		
@@ -39,7 +39,7 @@ public class Prueba2ChromeFF {
 		//crea el WebDriver para Chrome pasando como parametro el options creado anteriormente
 		WebDriver chromeDriver = new ChromeDriver(options);
 		
-		chromeDriver.get("https://www.github.com");
+		chromeDriver.get("https://www.google.com");
 		Imagen img1 = manipulador.capturarPantallaFullscreen(chromeDriver);
 		chromeDriver.close();
 
@@ -48,7 +48,7 @@ public class Prueba2ChromeFF {
 		//crea el WebDriver para firefox
 		WebDriver homeGoogleFF= new FirefoxDriver();
 		
-		homeGoogleFF.get("https://www.github.com");
+		homeGoogleFF.get("https://www.google.com");
 		Imagen img2 = manipulador.capturarPantallaFullscreen(homeGoogleFF);
 
 		homeGoogleFF.close();

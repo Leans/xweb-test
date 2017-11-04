@@ -118,9 +118,9 @@ public class Comparador {
         	int j;
         	int imax;		//ancho de la submatriz
         	int jmax;		//alto de la submatriz
-        	int delta = 0;	//margen de tolerancia, afecta el tamaño de la submatriz
+        	int delta = 2;	//margen de tolerancia, afecta el tamaño de la submatriz
         	boolean exito;
-        	int color;
+        	int toleranciaRGB = 25; //usado en la comparacion de pixeles, ajusta los valores de canales RGB
         	
         	//bucle que comparara los pixeles de las imagenes 1 y 2, de a pares
         	//recorre la imagen1 en ancho
@@ -141,15 +141,13 @@ public class Comparador {
                 			if ((i>=0 && i<imagen1Ancho)  && (j>=0 && j<imagen1Alto)) {
                 				
                 				//se hace la comparacion de pixel a pixel
-                				//si el pixel actual en imagen1 es distinto del pixel en la submatriz de imagen2
-                				if (imagen1.getRGB(x, y) == imagen2.getRGB(i, j)) {
+                				Pixel pixel1 = new Pixel(imagen1.getRGB(x, y));
+                				Pixel pixel2 = new Pixel(imagen2.getRGB(i, j));
+                				//si el pixel (x;y) en imagen1 es igual del pixel (i;j) en la submatriz de imagen2
+                				if (pixel1.compararParPixeles(pixel2, toleranciaRGB)) {
                 					//se ha encontrado un pixel igual al pixel (x;y) en la submatriz
                 					exito = true;
                 				}
-                				
-                				//System.out.println("img1 pixel: " + imagen1.getRGB(x, y) + ", img2 pixel: " + imagen2.getRGB(i, j));
-                				color = imagen1.getRGB(x, y);
-                				System.out.println("blue: " + (color & 0xff) + ", green: " + ((color & 0xff00) >> 8) + ", red: " + ((color & 0xff0000) >> 16) + ", aplha: " + ((color & 0xff000000) >>> 24) );
                 				
                 			}
                 			j++;
@@ -189,7 +187,7 @@ public class Comparador {
 	 * y un int que sera un valor tolerancia en la comparacion.
 	 * Devuelve un boolean segun si los pixeles resultan iguales dentro del valor de tolerancia.
 	 */
-    public static boolean compararParPixeles(int pixel1, int pixel2, int tolerancia) {
+    public static boolean compararParPixeles(int pixel1, int pixel2, int toleranciaRGB) {
     	
     	boolean comparacion = false;
     	
@@ -199,12 +197,12 @@ public class Comparador {
     	int red1 = (pixel1 & 0xff0000) >> 16;
     	
     	//obtiene los valores RGB minimos y maximos del pixel2 segun la tolerancia
-    	int blue2max = pixel2 & 0xff + tolerancia;
-    	int blue2min = pixel2 & 0xff - tolerancia;
-    	int green2max = (pixel2 & 0xff00) >> 8 + tolerancia;
-    	int green2min = (pixel2 & 0xff00) >> 8 - tolerancia;
-    	int red2max = (pixel2 & 0xff0000) >> 16 + tolerancia;
-    	int red2min = (pixel2 & 0xff0000) >> 16 - tolerancia;
+    	int blue2max = pixel2 & 0xff + toleranciaRGB;
+    	int blue2min = pixel2 & 0xff - toleranciaRGB;
+    	int green2max = (pixel2 & 0xff00) >> 8 + toleranciaRGB;
+    	int green2min = (pixel2 & 0xff00) >> 8 - toleranciaRGB;
+    	int red2max = (pixel2 & 0xff0000) >> 16 + toleranciaRGB;
+    	int red2min = (pixel2 & 0xff0000) >> 16 - toleranciaRGB;
     	
     	//si el valor del canal azul del pixel1 se encuentra dentro del valor tolerado de pixel2 
     	if (blue1 <= blue2max && blue1 >= blue2min) {

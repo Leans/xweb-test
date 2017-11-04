@@ -275,18 +275,14 @@ public class Manipulador {
      */
     public boolean crearReporte(Resultado resultado) {
         
-    	//se obtienen dos strings con los nombres de los navegadores
-        String navegador1 = resultado.getNavegador1();
-        String navegador2 = resultado.getNavegador2();
-        
-        //se obtienen la cantidad de pixeles total y diferentes
-        int cantPixIguales = resultado.getCantPixTotal() - resultado.getCantPixDiferentes();
-        int cantPixDiferentes= resultado.getCantPixDiferentes();
-        
-        //se crea el reporte mediante el metodo estatico de la clase Utils
-        //devuelve true si se pudo generar el reporte, caso contrario devuelve false
-        return Utils.crearReporte(this.path + "reporte.html", navegador1, navegador2,
-                this.nombrePrueba, this.fecha, cantPixIguales, cantPixDiferentes);
+        return Utils.crearReporte(this.path + "reporte.html", 
+        		resultado.getNavegador1(), 
+        		resultado.getNavegador2(),
+                this.nombrePrueba, 
+                this.fecha, 
+                resultado.getCantPixTotal() - resultado.getCantPixDiferentes(), //cantidad de pixeles iguales
+                resultado.getCantPixDiferentes(), 								//cantidad de pixeles diferentes
+                resultado.getPorcentajePxDiff());								//porcentaje de pixeles diferentes
     }
 
 }

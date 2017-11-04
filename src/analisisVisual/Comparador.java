@@ -2,6 +2,7 @@ package analisisVisual;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 
 /**
  *Clase Comparador.
@@ -101,17 +102,19 @@ public class Comparador {
         //se definen variables para usar en el algoritmo de comparacion de pixeles
         boolean resultado = true;
         Resultado resultadoFinal;
-        //cont cuenta la cantidad de pixeles comparados
-        int cont = 0;
+        //la cantidad de pixeles comparados
+        int pxTotal = 0;
         //pxDiff cuenta la cantidad de pixeles diferentes encontrados en la comparacion de pixeles
         int pxDiff = 0;
         BufferedImage mapaDeCalor = null;
+        int imagen1Ancho = imagen1.getWidth();
+        int imagen1Alto = imagen1.getHeight();
         
         //si el ancho y alto de las imagenes a comparar son iguales, se procede a realizar la comparacion
-        if (imagen1.getWidth() == imagen2.getWidth() && imagen1.getHeight() == imagen2.getHeight()) {
+        if (imagen1Ancho == imagen2.getWidth() && imagen1Alto == imagen2.getHeight()) {
             
         	//se crea un objeto mapaDeCalor de tipo BufferedImage, con el tamaño de las imagenes a comparar
-        	mapaDeCalor = new BufferedImage(imagen1.getWidth(), imagen1.getHeight(), BufferedImage.TYPE_INT_RGB);
+        	mapaDeCalor = new BufferedImage(imagen1Ancho, imagen1Alto, BufferedImage.TYPE_INT_RGB);
         	
         	//variables para el manejo del recorrido de la submatriz de imagen2
         	int i; 			//punto inicial (i;j)
@@ -121,13 +124,12 @@ public class Comparador {
         	int delta = 2;	//margen de tolerancia, afecta el tamaño de la submatriz
         	boolean exito;
         	int toleranciaRGB = 25; //usado en la comparacion de pixeles, ajusta los valores de canales RGB
+        	pxTotal = imagen1Ancho*imagen1Alto;
         	
         	//bucle que comparara los pixeles de las imagenes 1 y 2, de a pares
         	//recorre la imagen1 en ancho
-        	int imagen1Ancho = imagen1.getWidth();
             for (int x = 0; x < imagen1Ancho; x++) {
             	//recorre la imagen1 en alto
-            	int imagen1Alto = imagen1.getHeight();
                 for (int y = 0; y < imagen1Alto; y++) {
                 	i = x-delta;
                 	j = y-delta;
@@ -164,19 +166,20 @@ public class Comparador {
     					//incrementa el contador de pixeles diferentes entre ambas imagenes
     					pxDiff++;
                 	}
-                	//incrementa el contador de pixeles comparados
-                	cont++;
                 } //for imagen1Alto
             } //for imagen1Ancho
-        //si no son iguales el ancho y alto de las imagenes a comparar, no puede llevarse a cabo el procesamiento
         } else {
+        	//si no son iguales el ancho y alto de las imagenes, no pueden compararse
             resultado = false;
         }
+
+        //obtiene el porcentaje de pixeles diferentes en la comparacion
+        double porcentajePixDiff = (double)pxDiff*100/(double)pxTotal;
         
         //se crea un objeto resultadoFinal de tipo Resultado, 
         //con la informacion obtenida por el algoritmo de comparacion
-        resultadoFinal = new Resultado(resultado, pxDiff, cont, img1.getNombreNavegador(), 
-        		img2.getNombreNavegador(), mapaDeCalor);
+        resultadoFinal = new Resultado(resultado, pxDiff, pxTotal, img1.getNombreNavegador(), 
+        		img2.getNombreNavegador(), mapaDeCalor, porcentajePixDiff);
         
         return resultadoFinal;
     }

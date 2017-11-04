@@ -18,6 +18,7 @@ public class Resultado {
 	private String navegador1;
 	private String navegador2;
 	private BufferedImage mapaDeCalor;
+	private double PorcentajePxDiff;
 
 	/**
 	 * Constructor de Resultado. Recibe como parametros de entrada: un boolean, integer con la cantidad de pixeles diferentes,
@@ -33,6 +34,24 @@ public class Resultado {
 		this.navegador2 = navegador2;
 		this.mapaDeCalor = mapaDeCalor;
 		System.out.println(mapaDeCalor);
+		this.setPorcentajePxDiff(cantPixDiferentes*100/cantPixTotal);
+	}
+	
+	/**
+	 * Constructor de Resultado. Recibe como parametros de entrada: un boolean, integer con la cantidad de pixeles diferentes,
+	 * integer con la cantidad de pixeles totales, string con el navegador 1, string con el navegador 2, 
+	 * un BufferedImage (con la imagen-mapa de calor), un int con el porcentaje de pixeles diferentes
+	 */
+	public Resultado(boolean resultado, int cantPixDiferentes, int cantPixTotal, String navegador1, String navegador2,
+			BufferedImage mapaDeCalor, double porcentajePixDiff) {
+		this.resultado = resultado;
+		this.cantPixDiferentes = cantPixDiferentes;
+		this.cantPixTotal = cantPixTotal;
+		this.navegador1 = navegador1;
+		this.navegador2 = navegador2;
+		this.mapaDeCalor = mapaDeCalor;
+		System.out.println(mapaDeCalor);
+		this.setPorcentajePxDiff(porcentajePixDiff);
 	}
 
 	/**
@@ -139,6 +158,14 @@ public class Resultado {
 	 */
 	public void setMapaDeCalor(BufferedImage mapaDeCalor) {
 		this.mapaDeCalor = mapaDeCalor;
+	}
+
+	public double getPorcentajePxDiff() {
+		return PorcentajePxDiff;
+	}
+
+	public void setPorcentajePxDiff(double porcentajePixDiff) {
+		PorcentajePxDiff = porcentajePixDiff;
 	}
 
 }

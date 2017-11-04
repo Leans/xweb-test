@@ -3,6 +3,7 @@ package analisisVisual;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -79,7 +80,7 @@ public class Utils {
      */
     //@SuppressWarnings("deprecation")
 	public static boolean crearReporte(String path, String browser1, String browser2, String nombre, 
-			String fecha, int pxIgual, int pixDiff) {
+			String fecha, int pxIgual, int pixDiff, double porcentajePxDiff) {
         
         try {
         	//define un string con la fecha y hora
@@ -90,6 +91,9 @@ public class Utils {
             //almacena el contenido del archivo File en un string
             String htmlString = FileUtils.readFileToString(templateReportes, Charset.forName("utf-8"));
             
+            //define el formato de porcentaje de pixeles diferentes
+            DecimalFormat df = new DecimalFormat("0.00");
+            
             //reemplaza expresiones del string anterior, por valores de los parametros ingresados al metodo
             //y lo almacena en un nuevo string
             String htmlReemplazado = htmlString.replaceAll("pxIgual", String.valueOf(pxIgual))
@@ -98,7 +102,8 @@ public class Utils {
                     .replaceAll("browser1", browser1)
                     .replaceAll("browser2", browser2)
                     .replaceAll("nombre", nombre)
-                    .replaceAll("fecha", fechaYhora);
+                    .replaceAll("fecha", fechaYhora)
+                    .replaceAll("PorcentajePxDiff", df.format(porcentajePxDiff));
             
             //crea un nuevo archivo File en la ruta path especificada como parametro de entrada
             File newHtmlFile = new File(path);

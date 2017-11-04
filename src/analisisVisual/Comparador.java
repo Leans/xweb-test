@@ -22,7 +22,7 @@ public class Comparador {
         //se definen variables para usar en el algoritmo de comparacion de pixeles
         boolean resultado = true;
         Resultado resultadoFinal;
-        //cont cuenta la cantidad de pixeles comparados por el algoritmo que resultaron iguales
+        //cont cuenta la cantidad de pixeles comparados
         int cont = 0;
         //pxDiff cuenta la cantidad de pixeles diferentes encontrados en la comparacion de pixeles
         int pxDiff = 0;
@@ -54,7 +54,7 @@ public class Comparador {
                         //incrementa el contador de pixeles diferentes entre ambas imagenes
                         pxDiff++;
                     }
-                    //incrementa el contador de pixeles iguales entre ambas imagenes
+                    //incrementa el contador de pixeles comparados
                     cont++;
                 }
             }
@@ -101,7 +101,7 @@ public class Comparador {
         //se definen variables para usar en el algoritmo de comparacion de pixeles
         boolean resultado = true;
         Resultado resultadoFinal;
-        //cont cuenta la cantidad de pixeles comparados por el algoritmo que resultaron iguales
+        //cont cuenta la cantidad de pixeles comparados
         int cont = 0;
         //pxDiff cuenta la cantidad de pixeles diferentes encontrados en la comparacion de pixeles
         int pxDiff = 0;
@@ -115,10 +115,13 @@ public class Comparador {
         	mapaDeCalor = new BufferedImage(imagen1.getWidth(), imagen1.getHeight(), BufferedImage.TYPE_INT_RGB);
         	
         	//variables para el manejo del recorrido de la submatriz de imagen2
-        	int i;
+        	int i; 			//punto inicial (i;j)
         	int j;
-        	int delta = 0; //margen de tolerancia, afecta el tamaño de la submatriz
+        	int imax;		//ancho de la submatriz
+        	int jmax;		//alto de la submatriz
+        	int delta = 0;	//margen de tolerancia, afecta el tamaño de la submatriz
         	boolean exito;
+        	int color;
         	
         	//bucle que comparara los pixeles de las imagenes 1 y 2, de a pares
         	//recorre la imagen1 en ancho
@@ -127,34 +130,34 @@ public class Comparador {
             	//recorre la imagen1 en alto
             	int imagen1Alto = imagen1.getHeight();
                 for (int y = 0; y < imagen1Alto; y++) {
-                	//System.out.println("cont: " + cont + " | " + "PixDiff: " + pxDiff + " | " + "PxIgual: " + pxIgual);
-                	i = x-4;
-                	j = y-4;
+                	i = x-delta;
+                	j = y-delta;
+                	imax = x+delta;
+                	jmax = y+delta;
                 	exito = false;
                 	//recorre la submatriz de imagen2, del punto inicial (i;j), mientras no se encuentre un punto igual
-                	while (i<x+4) {
-
-                		while (j<y+4) {
-
+                	while (i<=imax) {
+                		while (j<=jmax) {
                 			//verifica que el punto (i;j) se encuentre dentro del indice de la matriz de la imagen
                 			if ((i>=0 && i<imagen1Ancho)  && (j>=0 && j<imagen1Alto)) {
-
                 				//se hace la comparacion de pixel a pixel
                 				//si el pixel actual en imagen1 es distinto del pixel en la submatriz de imagen2
                 				if (imagen1.getRGB(x, y) == imagen2.getRGB(i, j)) {
                 					//se ha encontrado un pixel igual al pixel (x;y) en la submatriz
                 					exito = true;
-                					pxIgual++;
                 				}
+                				
+                				//System.out.println("img1 pixel: " + imagen1.getRGB(x, y) + ", img2 pixel: " + imagen2.getRGB(i, j));
+                				color = imagen1.getRGB(x, y);
+                				System.out.println("blue: " + (color & 0xff) + ", green: " + ((color & 0xff00) >> 8) + ", red: " + ((color & 0xff0000) >> 16) + ", aplha: " + ((color & 0xff000000) >>> 24) );
+                				
                 			}
-                			
                 			j++;
-                		}
-                		
+                		} //end while j
                 		i++;
-                	}
+                	} //end while i
                 	
-                	//NO se encontro ningun pixel igual al pixel de imagen1 en (x;y) en la submatriz
+                	//si no se encontro ningun pixel igual al pixel de imagen1 en (x;y) en la submatriz
                 	if (!exito) {
                 		//la comparacion ha fallado, existe al menos un pixel diferente entre las imagenes
     					resultado = false;

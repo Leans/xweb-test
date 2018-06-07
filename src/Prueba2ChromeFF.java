@@ -22,41 +22,42 @@ import analisisVisual.Resultado;
  * Prueba para Chrome y Firefox, con www.google.com
  */
 public class Prueba2ChromeFF {
-
 	public static void main(String[] args) {
 		
 		Manipulador manipulador = new Manipulador("Prueba 2 Google - Chrome-Firefox");
 
+		//CHROME
 		System.setProperty("webdriver.chrome.driver", "C:\\browser-drivers\\chromedriver\\chromedriver.exe");
 		
 		//crea un options para Chrome
 		ChromeOptions options = new ChromeOptions();
 		//para desactivar la barra "Chrome is being controlled by automated test software"
 		options.addArguments("disable-infobars");
-		//fullscreen=F11
-		//options.addArguments("--start-fullscreen");
 		
 		//crea el WebDriver para Chrome pasando como parametro el options creado anteriormente
 		WebDriver chromeDriver = new ChromeDriver(options);
 		
+		//abre la pagina en chrome
 		chromeDriver.get("https://www.google.com");
+		//realiza la captura de pantalla
 		Imagen img1 = manipulador.capturarPantallaFullscreen(chromeDriver);
 		chromeDriver.close();
 
+		//FIREFOX
 		System.setProperty("webdriver.gecko.driver","C:\\browser-drivers\\geckodriver\\geckodriver.exe");
 		
 		//crea el WebDriver para firefox
-		WebDriver homeGoogleFF= new FirefoxDriver();
+		WebDriver firefoxDriver= new FirefoxDriver();
 		
-		homeGoogleFF.get("https://www.google.com");
-		Imagen img2 = manipulador.capturarPantallaFullscreen(homeGoogleFF);
-
-		homeGoogleFF.close();
+		//abre la pagina en firefox
+		firefoxDriver.get("https://www.google.com");
+		//realiza la captura de pantalla
+		Imagen img2 = manipulador.capturarPantallaFullscreen(firefoxDriver);
+		firefoxDriver.close();
 		
+		//ejecuta la comparacion pixel a matriz de pixeles
 		Resultado resultado1 = manipulador.compararImagenesPixAMatrizPix(img1, img2);
-		manipulador.crearReporte(resultado1);
-		
+		//crea el reporte con los resultados
+		manipulador.crearReporte(resultado1);		
 	}
-
 }
-
